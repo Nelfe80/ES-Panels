@@ -67,16 +67,24 @@ Chaque bouton définit :
    <?xml version="1.0"?>
    <inputList>
      <inputConfig type="joystick" deviceName="Generic USB Controller" deviceGUID="">
-       <input name="a"        type="button" id="0"  value="1"/>
-       <input name="b"        type="button" id="1"  value="1"/>
-       <input name="y"        type="button" id="2"  value="1"/>
-       <input name="x"        type="button" id="3"  value="1"/>
-       <input name="pageup"   type="button" id="4"  value="1"/>
-       <input name="pagedown" type="button" id="5"  value="1"/>
-       <input name="select"   type="button" id="6"  value="1"/>
-       <input name="start"    type="button" id="7"  value="1"/>
-       <input name="hotkey"   type="button" id="6"  value="1"/>
-       <!-- … axes … -->
+		<input name="a" type="button" id="0" value="1" />
+		<input name="b" type="button" id="1" value="1" />
+		<input name="y" type="button" id="2" value="1" />	
+		<input name="x" type="button" id="3" value="1" />		
+		<input name="pageup" type="button" id="4" value="1" />
+		<input name="pagedown" type="button" id="5" value="1" />
+		<input name="select" type="button" id="6" value="1" />
+		<input name="start" type="button" id="7" value="1" />
+		<input name="hotkey" type="button" id="6" value="1" />
+		<input name="r2" type="button" id="8" value="1" />
+		<input name="r3" type="button" id="10" value="1" />
+		<input name="l2" type="button" id="9" value="1" />
+		<input name="l3" type="button" id="11" value="1" />
+		
+		<input name="up" type="axis" id="1" value="-1" />
+		<input name="down" type="axis" id="1" value="1" />
+		<input name="left" type="axis" id="0" value="-1" />
+		<input name="right" type="axis" id="0" value="1" />
      </inputConfig>
    </inputList>
    ```
@@ -87,8 +95,8 @@ Chaque bouton définit :
 
 - **8 boutons**  
   ```
-    X   Y   L1  R1
-    A   B   L2  R2
+    X   Y   L1  L2
+    A   B   R1  R2
   ```  
 - **Ordre de priorité** (physique → logique RB)  
   ```
