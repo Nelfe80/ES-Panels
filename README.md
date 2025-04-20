@@ -16,7 +16,7 @@ Ces spécifications permettent :
 
 - L’écriture automatique du mapping dans `es_input.cfg` au lancement du jeu  
 - Le pilotage d’une matrice LED ou de boutons RGB selon les couleurs définies  
-- La génération de thèmes statiques positionnant et coloriant les icônes correctement  
+- La génération de thèmes statiques positionnant et coloriant les boutons leds correctement  
 
 ---
 
