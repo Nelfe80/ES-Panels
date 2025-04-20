@@ -104,7 +104,7 @@ Chaque bouton définit :
     1   2   6   8
   ```  
 - **Exemples**  
-  - 8 boutons → `3,4,5,7` = `X,Y,L1,R1`  ;  `1,2,6,8` = `A,B,L2,R2`  
+  - 8 boutons → `3,4,5,7` = `X,Y,L1,L2`  ;  `1,2,6,8` = `A,B,R1,R2`  
   - 6 boutons → `3,4,5` = `X,Y,L1`  ;  `1,2,6` = `A,B,R1`  
   - 4 boutons → `3,4` = `X,Y`  ;  `1,2` = `A,B`  
   - 2 boutons → `1,2` = `A,B`
