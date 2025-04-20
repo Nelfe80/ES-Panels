@@ -8,7 +8,7 @@ Ce README décrit le contexte, les objectifs et la structure du fichier XML de l
 
 - **Plateformes** : RetroBat + EmulationStation (ES).  
 - **Problème** : RetroBat propose une configuration manette générique, alors que chaque borne arcade possède un panel unique (1–8 boutons + Start + Coin).  
-- **Solution** : créer un standard **XML** de layout par jeu et par machine, chargeable par les themers, injectable dans ES/RetroBat et compatible avec les afficheurs LED.
+- **Solution** : créer un standard **XML** de layout par jeu et par machine, chargeable par les themers, injectable dans ES/RetroBat et compatible avec les panels LED.
 
 ---
 
