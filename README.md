@@ -109,13 +109,13 @@ Pour les ROMs NeoGeo, utiliser des dispositions custom et mappages spécifiques 
 
 | Boutons | Disposition logique        |
 |:-------:|:---------------------------|
-| **2**   | A   B                       |
-| **4**   | A   C  
-   B   D             |
-| **6**   | B   C   D  
-   A   –   –       |
-| **8**   | A   B   C   D  
-   –   –   –   –   |
+| **2**   | A   B                      |
+| **4**   | A   C                      |
+|         | B   D                      |
+| **6**   | B   C   D                  |
+|         | A   –   –                  |
+| **8**   | A   B   C   D              |
+|         | –   –   –   –              |
 
 Le mapping d’indices (`3,4,5,7 / 1,2,6,8`) s’aligne sur (`A,B,C,D / padding`).
 
@@ -174,7 +174,7 @@ NEOGEO_ROMS = {
 | `gameButton` | Nom logique dans l’émulateur/ROM                                          |
 | `x`, `y`     | Coordonnées relatives (%)                                                 |
 | `color`      | Couleur du LED / thème                                                    |
-| `function`   | Fonction assignée (ex. `B`, `Start`, `Coin`, ou `None`)                   |
+| `function`   | Fonction assignée (ex. `Kick`, `B`, `Start`, `Coin`, ou `None`)           |
 
 > Les boutons **Start** et **Coin** sont ajoutés automatiquement aux indices `N+1` et `N+2`.
 
