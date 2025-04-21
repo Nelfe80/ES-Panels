@@ -15,8 +15,8 @@ Ce dépôt contient un script Python qui génère, pour chaque ROM de jeu prise 
 - **RetroBat** est une distribution clé en main pour émulation sur Windows, macOS et Linux, s’appuyant sur **EmulationStation (ES)** pour l’interface graphique.
 - ES utilise des fichiers de configuration (`es_input.cfg`) pour mapper chaque bouton physique du pad aux touches virtuelles MAME (par exemple `A`, `B`, `X`, `Y`, `L1`, `R1`, etc.).
 - Par défaut, RetroBat propose le mapping suivant pour un panel à 8 boutons :
-  - **Première rangée (haut)** : boutons physiques 3,4,5,7 → touches ES `X`, `Y`, `L1`, `R1`
-  - **Deuxième rangée (bas)** : boutons physiques 1,2,6,8 → touches ES `A`, `B`, `L2`, `R2`
+  - **Première rangée (haut)** : boutons physiques 3,4,5,7 → touches ES `X`, `Y`, `L1`, `L2`
+  - **Deuxième rangée (bas)** : boutons physiques 1,2,6,8 → touches ES `A`, `B`, `R1`, `R2`
 
 Exemple dans ES (`es_input.cfg`) :
 ```xml
