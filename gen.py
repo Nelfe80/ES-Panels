@@ -1,10 +1,15 @@
+
 import os
 import configparser
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
 # Config files
-COLOR_INIS   = [ 'ledspicer-arcade-colors.ini', 'ledblinky-arcade-colors.ini', 'goldo-systems-colors.ini' ]
+COLOR_INIS   = [
+    'ledspicer-arcade-colors.ini',
+    'ledblinky-arcade-colors.ini',
+    'goldo-systems-colors.ini'
+]
 CONTROLS_INI = 'ledblinky-arcade-controls.ini'
 OUTPUT_DIR   = 'arcade'
 
@@ -31,17 +36,23 @@ NEO_PANEL_IDS = {
 # NeoGeo mappings
 NEO_GAMEBTN_MAP = {
     '2-Button': {'1':'A','2':'B'},
-    '4-Button': {'3':'A','4':'C','1':'B','2':'D'},
+    '4-Button': {'3':'C','4':'D','1':'A','2':'B'},
     '6-Button': {'3':'B','4':'C','5':'D','1':'A'},
     '8-Button': {'3':'A','4':'B','5':'C','7':'D'},
 }
 NEO_BUTTON_LETTER_ORDER = {'A':1,'B':2,'C':3,'D':4}
 
-# RetroBat maps
+# RetroBat maps (controller pour es_input.cfg)
 RB_PHYSICAL_ORDER = ['3','4','5','7','1','2','6','8']
-RB_CONTROLLER_MAP = {
-    '1':'A','2':'B','3':'X','4':'Y',
-    '5':'L1','6':'R1','7':'L2','8':'R2'
+RB_CONTROLLER_MAP  = {
+    '1': 'A',
+    '2': 'B',
+    '3': 'X',
+    '4': 'Y',
+    '5': 'PAGEUP',
+    '6': 'PAGEDOWN',
+    '7': 'L2',
+    '8': 'R2'
 }
 
 START_POS = (85,90)
@@ -111,8 +122,8 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
         ET.SubElement(lay, 'joystick', color=joy_col)
 
         for idx, phys_id in enumerate(ids, start=1):
-            x, y    = STATIC_POSITIONS[phys_id]
-            physical = RB_PHYSICAL_ORDER.index(phys_id) + 1
+            x, y     = STATIC_POSITIONS[phys_id]
+            physical = phys_id   # on garde le numéro physique
 
             if is_neo:
                 mapping = NEO_GAMEBTN_MAP[layout_type]
@@ -124,7 +135,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
                     func_btn   = get_value(func_cfg, 'neogeo',
                                            f'P1_BUTTON{letter_idx}', 'None')
                     btn_id     = letter
-                    controller = RB_CONTROLLER_MAP[phys_id]   # ← RetroBat mapping
+                    controller = RB_CONTROLLER_MAP[phys_id]
                     game_btn   = letter
                 else:
                     color_btn, func_btn = 'Gray','None'
@@ -137,15 +148,15 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
                 game_btn   = phys_id
 
             ET.SubElement(lay, 'button',
-                          id=btn_id,
-                          physical=str(physical),
-                          controller=controller,
-                          gameButton=game_btn,
-                          x=str(x), y=str(y),
-                          color=color_btn,
-                          function=func_btn)
+                          id         = btn_id,
+                          physical   = physical,
+                          controller = controller,
+                          gameButton = game_btn,
+                          x          = str(x),
+                          y          = str(y),
+                          color      = color_btn,
+                          function   = func_btn)
 
-        # Start & Coin
         ET.SubElement(lay, 'button',
                       id='START', physical=str(len(ids)+1),
                       controller='START', gameButton='START',
@@ -163,8 +174,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
 
 def generate_all_xmls():
     color_cfg, func_cfg = load_configurations()
-    func_roms = {sec.lower() for sec in func_cfg.sections()
-                 if sec not in ('DEFAULT','neogeo')}
+    func_roms = {s.lower() for s in func_cfg.sections() if s not in ('DEFAULT','neogeo')}
     all_roms  = sorted(func_roms.union(NEOGEO_ROMS))
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -177,6 +187,3 @@ def generate_all_xmls():
 if __name__ == '__main__':
     generate_all_xmls()
     print("Génération terminée !")
-
-
-
