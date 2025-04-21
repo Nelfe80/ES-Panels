@@ -1,226 +1,93 @@
-# Arcade Layout XML Specification
+# Arcade XML Generator
 
-Ce README décrit le contexte, les objectifs et la structure du fichier XML de layouts arcade, utilisé par RetroBat/ES, les services d’affichage LED RGB et les themers.
+Ce dépôt contient un script Python qui génère, pour chaque ROM de jeu prise en charge, un fichier XML décrivant :
 
----
-
-## Contexte
-
-- **Plateformes** : RetroBat + EmulationStation (ES).  
-- **Problème** : RetroBat propose une configuration manette générique, alors que chaque borne arcade possède un panel unique (1–8 boutons + Start + Coin).  
-- **Solution** : créer un standard **XML** de layout par jeu et par machine, chargeable par les themers, injectable dans ES/RetroBat et compatible avec les panels LED.
+- Le layout des contrôles (joystick + boutons) sur écran.
+- Le mapping des boutons pour EmulationStation / RetroBat (es_input.cfg).
+- Les couleurs LED associées, pour pilotage RGB.
 
 ---
 
-## Objectifs
+## 0. Contexte et bases
 
-1. **Flexibilité**  
-   - Générer un panel adapté au nombre de boutons de l’utilisateur (1–8 boutons de jeu, plus Start/Coin).  
-   - Respecter au mieux la disposition et les couleurs d’origine de chaque borne.  
+### RetroBat & EmulationStation
 
-2. **Sortie XML statique**  
-   - Un fichier XML par jeu, utilisé directement par les themers.  
+- **RetroBat** est une distribution clé en main pour émulation sur Windows, macOS et Linux, s’appuyant sur **EmulationStation (ES)** pour l’interface graphique.
+- ES utilise des fichiers de configuration (`es_input.cfg`) pour mapper chaque bouton physique du pad aux touches virtuelles MAME (par exemple `A`, `B`, `X`, `Y`, `L1`, `R1`, etc.).
+- Par défaut, RetroBat propose le mapping suivant pour un panel à 8 boutons :
+  - **Première rangée (haut)** : boutons physiques 3,4,5,7 → touches ES `X`, `Y`, `L1`, `R1`
+  - **Deuxième rangée (bas)** : boutons physiques 1,2,6,8 → touches ES `A`, `B`, `L2`, `R2`
 
-3. **Mapping complet**  
-   - **Utilisateur** (panel physique)  
-   - **Panel logique arcade** (MAME, MVS…)  
-   - **Boutons RetroBat/ES**  
-   - Au lancement :  
-     1. Lecture du XML et de la config utilisateur (nombre + positions).  
-     2. Génération ou override de `es_input.cfg` (avec sauvegarde `es_input_backup.cfg`).  
-     3. Transmission des couleurs/positions au service LED.  
-
-4. **Affichage LED**  
-   - Envoi au contrôleur LED de `(x, y, color)` par bouton, en cohérence avec le XML.
-
----
-
-## Critères du layout (non graphique)
-
-Chaque bouton définit :
-
-- **Position relative** : coordonnées `x`, `y` (pour visuel ou LED)  
-- **Couleur** : nom ou code (compatibilité LED RGB)  
-- **Fonction** : action (ex. `A`, `B`, `Start`, `Coin`, ou `None`)
-
----
-
-## Processus d’intégration
-
-1. **Récupération de la config utilisateur**  
-   - Nombre de boutons de jeu (1–8), positions physiques.  
-   - Start, Coin (hotkey/select).  
-
-2. **Correspondance boutons**  
-   - Disposition physique générique :  
-     ```
-       3   4   5   7
-       1   2   6   8
-       +Start +Select/Hotkey/Coin
-     ```  
-   - Mappage RetroBat par défaut :  
-     - L1 → pageup  
-     - R1 → pagedown  
-
-3. **es_input.cfg** (Exemple)  
-   ```xml
-   <?xml version="1.0"?>
-   <inputList>
-     <inputConfig type="joystick" deviceName="Generic USB Controller" deviceGUID="">
-		<input name="a" type="button" id="0" value="1" />
-		<input name="b" type="button" id="1" value="1" />
-		<input name="y" type="button" id="2" value="1" />	
-		<input name="x" type="button" id="3" value="1" />		
-		<input name="pageup" type="button" id="4" value="1" />
-		<input name="pagedown" type="button" id="5" value="1" />
-		<input name="select" type="button" id="6" value="1" />
-		<input name="start" type="button" id="7" value="1" />
-		<input name="hotkey" type="button" id="6" value="1" />
-		<input name="r2" type="button" id="8" value="1" />
-		<input name="r3" type="button" id="10" value="1" />
-		<input name="l2" type="button" id="9" value="1" />
-		<input name="l3" type="button" id="11" value="1" />
-		
-		<input name="up" type="axis" id="1" value="-1" />
-		<input name="down" type="axis" id="1" value="1" />
-		<input name="left" type="axis" id="0" value="-1" />
-		<input name="right" type="axis" id="0" value="1" />
-     </inputConfig>
-   </inputList>
-   ```
-
----
-
-## Mappages RetroBat par défaut
-
-- **8 boutons**  
-  ```
-    X   Y   L1  L2
-    A   B   R1  R2
-  ```  
-- **Ordre de priorité** (physique → logique RB)  
-  ```
-    3   4   5   7
-    1   2   6   8
-  ```  
-- **Exemples**  
-  - 8 boutons → `3,4,5,7` = `X,Y,L1,L2`  ;  `1,2,6,8` = `A,B,R1,R2`  
-  - 6 boutons → `3,4,5` = `X,Y,L1`  ;  `1,2,6` = `A,B,R1`  
-  - 4 boutons → `3,4` = `X,Y`  ;  `1,2` = `A,B`  
-  - 2 boutons → `1,2` = `A,B`
-
----
-
-## Cas particuliers NeoGeo
-
-Pour les ROMs NeoGeo, utiliser des dispositions custom et mappages spécifiques :
-
-| Boutons | Disposition logique        |
-|:-------:|:---------------------------|
-| **2**   | A   B                      |
-| **4**   | A   C                      |
-|         | B   D                      |
-| **6**   | B   C   D                  |
-|         | A   –   –                  |
-| **8**   | A   B   C   D              |
-|         | –   –   –   –              |
-
-Le mapping d’indices (`3,4,5,7 / 1,2,6,8`) s’aligne sur (`A,B,C,D / padding`).
-
-```python
-NEOGEO_ROMS = {
-  '2020bb','3countb','afighters', … ,'zedblade','zupapa'
-}
-```
-
----
-
-## Structure Générale du XML
-
+Exemple dans ES (`es_input.cfg`) :
 ```xml
-<?xml version="1.0" encoding="utf-8"?>
-<system name="arcade">
-  <game name="IDENTIFIANT" rom="ROM_NAME">
-    <layouts>
-      <!-- pour chaque N = 1…8 -->
-      <layout panelButtons="N" type="N-Button">
-        <joystick color="COULEUR_JOYSTICK"/>
-        <!-- P1_BUTTON1…P1_BUTTONN -->
-        <button id="P1_BUTTON1" physical="1" controller="…" gameButton="P1_BUTTON1"
-                x="…" y="…" color="…" function="…"/>
-        …
-        <button id="P1_START"  physical="N+1" controller="START"  gameButton="START"
-                x="85" y="90" color="White" function="Start"/>
-        <button id="P1_COIN"   physical="N+2" controller="SELECT" gameButton="COIN"
-                x="95" y="90" color="White" function="Coin"/>
-      </layout>
-    </layouts>
-  </game>
-</system>
+<pad index="0" device="0">
+  <input name="a" type="button" id="1"/>
+  <input name="b" type="button" id="2"/>
+  <input name="x" type="button" id="3"/>
+  <input name="y" type="button" id="4"/>
+  <input name="pageup" type="button" id="5"/>   <!-- phys 5 (L1) -->
+  <input name="pagedown" type="button" id="6"/> <!-- phys 6 (R1) -->
+  <input name="l2" type="button" id="7"/>
+  <input name="r2" type="button" id="8"/>
+  <input name="start" type="button" id="9"/>
+  <input name="select" type="button" id="10"/>
+</pad>
 ```
 
----
+### Objectifs du processus du processus du processus
 
-## Détail des Balises et Attributs
+Le script assure :
 
-### `<layout>`
-
-- `panelButtons` : nombre de boutons de jeu (hors Start/Coin)  
-- `type` : libellé humain (ex. `6-Button`)
-
-### `<joystick>`
-
-- `color` : couleur LED du joystick
-
-### `<button>`
-
-| Attribut     | Description                                                               |
-|--------------|---------------------------------------------------------------------------|
-| `id`         | Identifiant (ex. `P1_BUTTON1`, `START`, `COIN`)                          |
-| `physical`   | Indice physique (1…N)                                                     |
-| `controller` | Touche RetroBat/ES (ex. `A`, `SELECT`, `START`)                           |
-| `gameButton` | Nom logique dans l’émulateur/ROM                                          |
-| `x`, `y`     | Coordonnées relatives (%)                                                 |
-| `color`      | Couleur du LED / thème                                                    |
-| `function`   | Fonction assignée (ex. `Kick`, `B`, `Start`, `Coin`, ou `None`)           |
-
-> Les boutons **Start** et **Coin** sont ajoutés automatiquement aux indices `N+1` et `N+2`.
+1. **Standardiser** un layout arcade de 1 à 8 boutons (+ Start, Select/Coin) adapté à la borne de l’utilisateur.
+2. **Générer** un XML statique par jeu/machine (`<rom>.xml`) pour les thémers sous ES et pour l’afficheur de LED.
+3. **Construire** dynamiquement la configuration MAME (`<rom>.cfg`) dans `bios/mame/cfg` avant lancement du jeu, puis restaurer le backup à la fin de la session.
+4. **Piloter** l’afficheur LED RGB en cohérence avec les couleurs de boutons d’origine.
 
 ---
 
-## Exemple Complet de Layout (4-Button)
+## 4. Logique de mapping et d’injection MAME
 
-```xml
-<layout panelButtons="4" type="4-Button">
-  <joystick color="Black"/>
-  <button id="P1_BUTTON1" physical="1" controller="A"      gameButton="P1_BUTTON1" x="30" y="40" color="Red"    function="A"/>
-  <button id="P1_BUTTON2" physical="2" controller="B"      gameButton="P1_BUTTON2" x="50" y="40" color="Yellow" function="B"/>
-  <button id="P1_BUTTON3" physical="3" controller="C"      gameButton="P1_BUTTON3" x="30" y="60" color="Green"  function="C"/>
-  <button id="P1_BUTTON4" physical="4" controller="D"      gameButton="P1_BUTTON4" x="50" y="60" color="Blue"   function="D"/>
-  <button id="P1_START"   physical="5" controller="START"  gameButton="START"      x="85" y="90" color="White" function="Start"/>
-  <button id="P1_COIN"    physical="6" controller="SELECT" gameButton="COIN"       x="95" y="90" color="White" function="Coin"/>
-</layout>
-```
+1. **Récupérer** la configuration utilisateur du panel (nombre de boutons, positions 3 4 5 7 / 1 2 6 8 + Start/Coin) via un fichier `config.ini` du plugin.
+2. **Charger** :
+   - Le XML `<rom>_inputs.cfg` extrait des ports MAME (toutes les entrées `<port>` existantes).
+   - Le XML `<rom>.xml` issu du script (layout + mapping RetroBat).  
+3. **Fusionner** ces deux sources pour générer un MAME CFG :
+   - Pour chaque `<port tag=":P1" type="P1_BUTTONn">`, on remplace `<newseq>` par la touche ES correspondante via `RB_CONTROLLER_MAP` (voir § Mapping).  
+   - Les ports joystick WA/WD/WS/WE sont positionnés selon `STATIC_POSITIONS`.  
+4. **Écrire** le fichier `bios/mame/cfg/<rom>.cfg` et conserver `bios/mame/cfg/<rom>_backup.cfg`.
 
 ---
 
-## Exploitation
+## 5. Mapping RetroBat → MAME
 
-1. **Injection ES**  
-   - Parser le XML et générer `es_input.cfg`.  
-2. **Affichage LED**  
-   - Envoyer chaque `(x, y, color)` au contrôleur LED.  
-3. **Thèmes**  
-   - Positionner/icôner via `x, y` et colorier selon `color`, lier l’action via `controller`.
+Chaque ID physique (1–8) est mappé sur une touche ES (nom ES) puis sur un `KEYCODE_…` dans MAME :
+
+| Phys ID | ES name   | MAME KEYCODE      |
+| ------- | --------- | ----------------- |
+| 1       | a         | KEYCODE_1PAD      |
+| 2       | b         | KEYCODE_2PAD      |
+| 3       | x         | KEYCODE_3PAD      |
+| 4       | y         | KEYCODE_4PAD      |
+| 5       | pageup    | KEYCODE_5PAD      |
+| 6       | pagedown  | KEYCODE_6PAD      |
+| 7       | l2        | KEYCODE_7PAD      |
+| 8       | r2        | KEYCODE_8PAD      |
+| START   | start     | KEYCODE_9PAD      |
+| COIN    | select    | KEYCODE_5PAD      |
+
+- **pageup** (phys 5) et **pagedown** (phys 6) sont utilisés dans ES pour émuler L1/R1.
+---
+
+## 6. Processus complet
+
+1. **Watchdog** du plugin surveille `ESEvent.arg` pour l’événement `game-selected`.
+2. **Extraction** du nom de ROM (param3) et chemin de rom.
+3. **Génération** du `<rom>.xml` (layout LED + bouton logique).
+4. **Lecture** de `<rom>_inputs.cfg` (ports MAME) et fusion via le mapping.
+5. **Écriture** de `bios/mame/cfg/<rom>.cfg` + backup.
+6. **Lancement** de MAME standalone (mame64) avec la nouvelle config.
 
 ---
 
-## Bénéfices
+*Ce README est à jour avec la nouvelle logique d’injection MAME et de génération LED.*
 
-- **Fidélité** à l’original (layout + couleurs)  
-- **Flexibilité** (1–8 boutons + Start/Coin)  
-- **Interopérabilité** (RetroBat/ES, afficheur LED, themers)
-
----
-
-> **Astuce** : pour tout nouveau panel ou variante (NeoGeo MVS, Type 2…), ajustez simplement les dictionnaires `LAYOUTS` (positions) et `RB_ORDER` (mappages).
