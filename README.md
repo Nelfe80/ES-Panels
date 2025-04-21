@@ -45,7 +45,7 @@ Le script assure :
 
 ---
 
-## 4. Logique de mapping et d’injection MAME
+## Logique de mapping et d’injection MAME
 
 1. **Récupérer** la configuration utilisateur du panel (nombre de boutons, positions 3 4 5 7 / 1 2 6 8 + Start/Coin) via un fichier `config.ini` du plugin.
 2. **Charger** :
@@ -58,7 +58,7 @@ Le script assure :
 
 ---
 
-## 5. Mapping RetroBat → MAME
+## Mapping RetroBat → MAME
 
 Chaque ID physique (1–8) est mappé sur une touche ES (nom ES) puis sur un `KEYCODE_…` dans MAME :
 
@@ -78,7 +78,7 @@ Chaque ID physique (1–8) est mappé sur une touche ES (nom ES) puis sur un `KE
 - **pageup** (phys 5) et **pagedown** (phys 6) sont utilisés dans ES pour émuler L1/R1.
 ---
 
-## 6. Processus complet
+## Processus complet à atteindre
 
 1. **Watchdog** du plugin surveille `ESEvent.arg` pour l’événement `game-selected`.
 2. **Extraction** du nom de ROM (param3) et chemin de rom.
