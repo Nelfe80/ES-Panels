@@ -34,7 +34,7 @@ Exemple dans ES (`es_input.cfg`) :
 </pad>
 ```
 
-### Objectifs du processus du processus du processus
+### Objectifs du processus
 
 Le script assure :
 
