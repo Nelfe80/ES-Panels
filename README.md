@@ -8,7 +8,7 @@ Ce dépôt contient un script Python qui génère, pour chaque ROM de jeu prise 
 
 ---
 
-## 0. Contexte et bases
+## Contexte et bases
 
 ### RetroBat & EmulationStation
 
