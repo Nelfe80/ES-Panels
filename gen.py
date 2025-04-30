@@ -35,11 +35,10 @@ NEO_PANEL_IDS = {
 # NeoGeo mappings
 NEO_GAMEBTN_MAP = {
     '2-Button': {'1': 'A', '2': 'B'},
-    # Updated 4-Button mapping for NeoGeo:
-    # B on phys 1, A on phys 3, C on phys 4, D on phys 2
+    # 4-Button NeoGeo exception
     '4-Button': {'1': 'B', '3': 'A', '4': 'C', '2': 'D'},
     '6-Button': {'3': 'B', '4': 'C', '5': 'D', '1': 'A'},
-    # For 8-Button NeoGeo: A on 1, B/C/D on 4,5,7
+    # 8-Button NeoGeo exception
     '8-Button': {'1': 'A', '4': 'B', '5': 'C', '7': 'D'},
 }
 NEO_BUTTON_LETTER_ORDER = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
@@ -48,6 +47,7 @@ NEO_BUTTON_COLORS = {'A': 'Red', 'B': 'Yellow', 'C': 'Green', 'D': 'Blue'}
 
 # RetroBat maps (for es_input.cfg)
 RB_PHYSICAL_ORDER = ['3','4','5','7','1','2','6','8']
+# Controller mapping retains PAGEUP/PAGEDOWN
 RB_CONTROLLER_MAP = {
     '1': 'A', '2': 'B', '3': 'X', '4': 'Y',
     '5': 'PAGEUP', '6': 'PAGEDOWN', '7': 'L2', '8': 'R2'
@@ -116,7 +116,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
     layouts = ET.SubElement(game_el, 'layouts')
 
     # Joystick color: black on NeoGeo, else from config
-    joy_col   = get_value(color_cfg, col_sec, 'P1_JOYSTICK', JOYSTICK_DEFAULT_COLOR)
+    joy_col        = get_value(color_cfg, col_sec, 'P1_JOYSTICK', JOYSTICK_DEFAULT_COLOR)
     joystick_color = 'Black' if is_neo else joy_col
 
     panel_ids_map = NEO_PANEL_IDS if is_neo else NON_NEO_PANEL_IDS
@@ -128,7 +128,6 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
             panelButtons=str(len(ids)),
             type=layout_type
         )
-        # Joystick element with override
         ET.SubElement(lay, 'joystick', color=joystick_color)
 
         for idx, phys_id in enumerate(ids, start=1):
@@ -136,7 +135,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
             physical = phys_id
 
             if is_neo:
-                mapping = NEO_GAMEBTN_MAP[layout_type]
+                mapping    = NEO_GAMEBTN_MAP[layout_type]
                 if phys_id in mapping:
                     letter   = mapping[phys_id]
                     letter_i = NEO_BUTTON_LETTER_ORDER[letter]
@@ -147,15 +146,21 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
                 controller = RB_CONTROLLER_MAP.get(phys_id, 'NONE')
                 game_btn   = letter if letter else 'NONE'
             else:
+                controller = RB_CONTROLLER_MAP[phys_id]
+                # gameButton same as controller but override L1/R1
+                if controller == 'PAGEUP':
+                    game_btn = 'L1'
+                elif controller == 'PAGEDOWN':
+                    game_btn = 'R1'
+                else:
+                    game_btn = controller
                 color_btn = get_value(color_cfg, rom, f'P1_BUTTON{idx}', 'Gray')
                 func_btn  = get_value(func_cfg, rom, f'P1_BUTTON{idx}', 'None')
-                controller= RB_CONTROLLER_MAP[phys_id]
-                game_btn  = phys_id
 
             # If no function, black
             if func_btn == 'None':
                 color_btn = 'Black'
-            # NeoGeo button color override
+            # NeoGeo color override
             if is_neo and game_btn in NEO_BUTTON_COLORS:
                 color_btn = NEO_BUTTON_COLORS[game_btn]
 
@@ -186,7 +191,6 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
             color      = get_value(color_cfg, col_sec, 'P1_START', 'White'),
             function   = 'Start'
         )
-        # COIN button
         coin_phys = str(len(ids) + 2)
         ET.SubElement(
             lay,
