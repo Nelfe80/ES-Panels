@@ -15,38 +15,38 @@ OUTPUT_DIR   = 'mame'
 # Static positions
 STATIC_POSITIONS = {
     '1': (30,60), '2': (50,60), '6': (70,60), '8': (90,60),
-    '3': (30,40), '4': (50,40), '5': (70,40), '7': (90,40),
+    '4': (30,40), '3': (50,40), '5': (70,40), '7': (90,40),
 }
 
 # Panel orders
 NON_NEO_PANEL_IDS = {
     '2-Button': ['1','2'],
-    '4-Button': ['1','2','3','4'],
-    '6-Button': ['1','2','6','3','4','5'],
-    '8-Button': ['1','2','6','8','3','4','5','7'],
+    '4-Button': ['1','2','4','3'],
+    '6-Button': ['1','2','6','4','3','5'],
+    '8-Button': ['1','2','6','8','4','3','5','7'],
 }
 NEO_PANEL_IDS = {
     '2-Button': ['1','2'],
-    '4-Button': ['3','4','1','2'],
-    '6-Button': ['3','4','5','1','2','6'],
-    '8-Button': ['3','4','5','7','1','2','6','8'],
+    '4-Button': ['4','3','1','2'],
+    '6-Button': ['4','3','5','1','2','6'],
+    '8-Button': ['4','3','5','7','1','2','6','8'],
 }
 
 # NeoGeo mappings
 NEO_GAMEBTN_MAP = {
     '2-Button': {'1': 'A', '2': 'B'},
     # 4-Button NeoGeo exception
-    '4-Button': {'1': 'B', '3': 'A', '4': 'C', '2': 'D'},
-    '6-Button': {'3': 'B', '4': 'C', '5': 'D', '1': 'A'},
+    '4-Button': {'1': 'B', '4': 'A', '3': 'C', '2': 'D'},
+    '6-Button': {'4': 'B', '3': 'C', '5': 'D', '1': 'A'},
     # 8-Button NeoGeo exception
-    '8-Button': {'1': 'A', '4': 'B', '5': 'C', '7': 'D'},
+    '8-Button': {'1': 'A', '3': 'B', '5': 'C', '7': 'D'},
 }
 NEO_BUTTON_LETTER_ORDER = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
 # Color override for NeoGeo buttons
 NEO_BUTTON_COLORS = {'A': 'Red', 'B': 'Yellow', 'C': 'Green', 'D': 'Blue'}
 
 # RetroBat maps (for es_input.cfg)
-RB_PHYSICAL_ORDER = ['3','4','5','7','1','2','6','8']
+RB_PHYSICAL_ORDER = ['4','3','5','7','1','2','6','8']
 # Controller mapping retains PAGEUP/PAGEDOWN
 RB_CONTROLLER_MAP = {
     '1': 'A', '2': 'B', '3': 'X', '4': 'Y',
