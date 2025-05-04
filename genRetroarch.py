@@ -180,6 +180,7 @@ MACHINE_TO_EMUS = {
     'zxspectrum':     ['fuse'],
 }
 
+
 EMU_TO_MACHINES = {}
 for machine, emus in MACHINE_TO_EMUS.items():
     for e in emus:
@@ -230,10 +231,12 @@ def find_header_indices(headers):
                      if 'remap' in h.lower() or 'descriptor' in h.lower()), None)
     idx_rp   = next((i for i,h in enumerate(headers)
                      if 'retropad' in h.lower()), None)
-    return idx_desc, idx_rp
+    # la 3e colonne c'est tout autre chose
+    idx_sys  = next((i for i in range(len(headers))
+                     if i not in (idx_desc, idx_rp)), None)
+    return idx_desc, idx_rp, idx_sys
 
 def clean_group_name(raw):
-    # enlève liens markdown et parenthèses
     s = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', raw)
     s = re.sub(r'[\[\]\(\)]', '', s).strip()
     return s or 'default'
@@ -244,10 +247,9 @@ def fallback_scan(lines):
     for l in lines:
         for m in re.finditer(r'\.\./image/retropad/retro_([a-z0-9_]+)\.png', l):
             k = m.group(1).lower()
-            if k in seen:
-                continue
+            if k in seen: continue
             seen.add(k)
-            out.append((k, k.upper()))
+            out.append((k, k.upper(), ''))
     return out
 
 def process_md(md_path, out_dir):
@@ -267,55 +269,50 @@ def process_md(md_path, out_dir):
             tbl = extract_table(lines, i)
             if any('../image/retropad/' in r for r in tbl):
                 headers = [c.strip() for c in line.strip().strip('|').split('|')]
-                idx_desc, idx_rp = find_header_indices(headers)
+                idx_desc, idx_rp, idx_sys = find_header_indices(headers)
                 if idx_rp is None and tbl:
                     first = [c.strip() for c in tbl[0].strip().strip('|').split('|')]
                     idx_rp = next((j for j,v in enumerate(first)
                                    if '../image/retropad/' in v), None)
 
-                # nom de groupe : soit le dernier ####, soit la première cellule
-                raw_name = last_heading if (i>0 and lines[i-1].startswith('####')) else headers[0]
+                raw_name = (last_heading if (i>0 and lines[i-1].startswith('####'))
+                            else headers[0])
                 grp_name = clean_group_name(raw_name)
 
-                mappings = []
+                maps = []
                 for row in tbl:
                     cells = [c.strip() for c in row.strip().strip('|').split('|')]
                     if idx_rp is None or idx_rp >= len(cells):
                         continue
+                    # find key
                     mimg = re.search(r'/([^/]+?)\.(?:png|jpg|svg)', cells[idx_rp])
                     if not mimg:
                         continue
                     key = mimg.group(1).replace('retro_','').lower()
-
-                    # descriptor ou input
-                    text = ''
+                    # description
+                    desc = ''
                     if idx_desc is not None and idx_desc < len(cells):
-                        text = cells[idx_desc]
-                    # si text contient balise image, on en extrait le label
-                    m2 = re.search(r'/([^/]+?)\.(?:png|jpg|svg)', text)
-                    if m2:
-                        lbl = m2.group(1)
-                        lbl = re.sub(r'^(PS3_|PS4_|retro_)','', lbl, flags=re.IGNORECASE)
-                        text = lbl.replace('_',' ').strip()
+                        desc = cells[idx_desc]
+                    inp = ''
+                    if idx_sys is not None and idx_sys < len(cells):
+                        inp = cells[idx_sys]
+                    # prefer desc sinon inp
+                    text = desc or inp
 
-                    if text:
-                        mappings.append((key, text))
-
-                if mappings:
-                    groups.append({'name':grp_name, 'mappings':mappings})
-
+                    maps.append((key, text, inp))
+                if maps:
+                    groups.append({'name':grp_name, 'mappings':maps})
                 i += len(tbl) + 1
                 continue
 
         i += 1
 
-    # fallback si aucun groupe
     if not groups:
         fb = fallback_scan(lines)
         if fb:
             groups = [{'name':'default','mappings':fb}]
 
-    # génération XML
+    # XML
     core = md_path.stem
     machines = EMU_TO_MACHINES.get(core, []) or [core]
     sys_name = ",".join(sorted(set(machines)))
@@ -332,34 +329,33 @@ def process_md(md_path, out_dir):
             attrs['type'] = 'default'
         gnode = ET.SubElement(inp, 'group', attrs)
 
-        for key, text in grp['mappings']:
+        for key, text, sysentr in grp['mappings']:
             ok = True
             dev_id = RETRO_IDS.get(key)
             if key in DIRECTIONS:
                 p = ET.SubElement(gnode, 'port', {'type': DIRECTIONS[key]})
                 at = {'type':'standard'}
-                if dev_id is not None:
-                    at['retropad_id'] = str(dev_id)
+                if dev_id is not None:    at['retropad_id'] = str(dev_id)
+                if sysentr:              at['system_entry'] = sysentr
                 ET.SubElement(p, 'newseq', at).text = text
 
             elif key in RETRO_BUTTONS:
                 bid, btn = RETRO_BUTTONS[key]
                 p = ET.SubElement(gnode, 'port', {'type': f'P1_{bid}'})
                 at = {'type':'standard'}
-                if btn:
-                    at['button'] = btn
-                if dev_id is not None:
-                    at['retropad_id'] = str(dev_id)
+                if btn:                    at['button']       = btn
+                if dev_id is not None:     at['retropad_id']  = str(dev_id)
+                if sysentr:                at['system_entry']= sysentr
                 ET.SubElement(p, 'newseq', at).text = text
 
-    xml_str = prettify(root)
+    xml = prettify(root)
     xml_name = md_path.with_suffix('.xml').name
-    (out_dir / xml_name).write_text(xml_str, encoding='utf-8')
+    (out_dir / xml_name).write_text(xml, encoding='utf-8')
     return xml_name, ok
 
 def main():
-    base    = Path('libreto')     # <-- dossier contenant vos .md
-    out_dir = Path('retroarch')   # <-- dossier de sortie des .xml
+    base    = Path('libreto')
+    out_dir = Path('retroarch')
     out_dir.mkdir(exist_ok=True)
 
     mds   = sorted(base.glob('*.md'))
