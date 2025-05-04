@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="dice" emulator="dice">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="Device name Inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="-">Button 1</newseq>
       </port>

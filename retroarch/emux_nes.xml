@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="emux_nes" emulator="emux_nes">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="Emux NES core Inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="B">B</newseq>
       </port>

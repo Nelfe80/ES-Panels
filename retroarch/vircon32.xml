@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="vircon32" emulator="vircon32">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="Vircon32 inputs">
       <port type="P1_BUTTON9">
         <newseq type="standard" button="START" retropad_id="3" system_entry="Button Start">Button Start</newseq>
       </port>

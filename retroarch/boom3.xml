@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="boom3" emulator="boom3">
   <input>
-    <group name="User 1 input descriptors for 'Gamepad Classic' device type">
+    <group name="PrBoom inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="Use">Use</newseq>
       </port>
@@ -45,7 +45,7 @@
         <newseq type="standard" button="R2" retropad_id="13" system_entry="Next Weapon">Next Weapon</newseq>
       </port>
     </group>
-    <group name="User 1 input descriptors for 'Gamepad Modern' device type">
+    <group name="PrBoom inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="Menu Cancel">Menu Cancel</newseq>
       </port>

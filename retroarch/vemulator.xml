@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="vemulator" emulator="vemulator">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="VeMUlator core Inputs">
       <port type="P1_BUTTON1">
         <newseq type="standard" button="A" retropad_id="8" system_entry="A">A</newseq>
       </port>

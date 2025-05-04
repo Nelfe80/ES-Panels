@@ -231,12 +231,13 @@ def find_header_indices(headers):
                      if 'remap' in h.lower() or 'descriptor' in h.lower()), None)
     idx_rp   = next((i for i,h in enumerate(headers)
                      if 'retropad' in h.lower()), None)
-    # la 3e colonne c'est tout autre chose
-    idx_sys  = next((i for i in range(len(headers))
-                     if i not in (idx_desc, idx_rp)), None)
-    return idx_desc, idx_rp, idx_sys
+    # toutes les autres colonnes sont des colonnes "machine"
+    system_cols = [i for i in range(len(headers))
+                   if i not in (idx_desc, idx_rp)]
+    return idx_desc, idx_rp, system_cols
 
 def clean_group_name(raw):
+    # retire [texte](url), crochets et parenthèses
     s = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', raw)
     s = re.sub(r'[\[\]\(\)]', '', s).strip()
     return s or 'default'
@@ -260,6 +261,7 @@ def process_md(md_path, out_dir):
 
     while i < len(lines):
         line = lines[i]
+        # on mémorise le titre ####… comme nom de groupe par défaut
         if line.startswith('####'):
             last_heading = clean_group_name(line.lstrip('#').strip())
             i += 1
@@ -267,85 +269,79 @@ def process_md(md_path, out_dir):
 
         if line.startswith('|'):
             tbl = extract_table(lines, i)
+            # ne traiter que si on y trouve une image RetroPad
             if any('../image/retropad/' in r for r in tbl):
                 headers = [c.strip() for c in line.strip().strip('|').split('|')]
-                idx_desc, idx_rp, idx_sys = find_header_indices(headers)
+                idx_desc, idx_rp, system_cols = find_header_indices(headers)
+                # si rp non trouvé, on cherche dans la première ligne
                 if idx_rp is None and tbl:
                     first = [c.strip() for c in tbl[0].strip().strip('|').split('|')]
                     idx_rp = next((j for j,v in enumerate(first)
                                    if '../image/retropad/' in v), None)
-
-                raw_name = (last_heading if (i>0 and lines[i-1].startswith('####'))
+                raw_name = (last_heading if i>0 and lines[i-1].startswith('####')
                             else headers[0])
-                grp_name = clean_group_name(raw_name)
-
-                maps = []
-                for row in tbl:
-                    cells = [c.strip() for c in row.strip().strip('|').split('|')]
-                    if idx_rp is None or idx_rp >= len(cells):
-                        continue
-                    # find key
-                    mimg = re.search(r'/([^/]+?)\.(?:png|jpg|svg)', cells[idx_rp])
-                    if not mimg:
-                        continue
-                    key = mimg.group(1).replace('retro_','').lower()
-                    # description
-                    desc = ''
-                    if idx_desc is not None and idx_desc < len(cells):
-                        desc = cells[idx_desc]
-                    inp = ''
-                    if idx_sys is not None and idx_sys < len(cells):
-                        inp = cells[idx_sys]
-                    # prefer desc sinon inp
-                    text = desc or inp
-
-                    maps.append((key, text, inp))
-                if maps:
-                    groups.append({'name':grp_name, 'mappings':maps})
+                # pour chaque colonne machine, on crée un groupe
+                for sys_idx in system_cols:
+                    grp_name = clean_group_name(headers[sys_idx])
+                    mappings = []
+                    for row in tbl:
+                        cells = [c.strip() for c in row.strip().strip('|').split('|')]
+                        if idx_rp is None or idx_rp >= len(cells): continue
+                        # trouve la clé depuis l'image
+                        mimg = re.search(r'/([^/]+?)\.(?:png|jpg|svg)', cells[idx_rp])
+                        if not mimg: continue
+                        key = mimg.group(1).replace('retro_','').lower()
+                        # description ou remap
+                        desc = cells[idx_desc] if idx_desc is not None and idx_desc < len(cells) else ''
+                        # colonne machine (system_entry)
+                        sysent = cells[sys_idx] if sys_idx < len(cells) else ''
+                        text = desc or sysent
+                        mappings.append((key, text, sysent))
+                    if mappings:
+                        groups.append({'name':grp_name, 'mappings':mappings})
                 i += len(tbl) + 1
                 continue
 
         i += 1
 
+    # fallback si rien trouvé
     if not groups:
         fb = fallback_scan(lines)
         if fb:
             groups = [{'name':'default','mappings':fb}]
 
-    # XML
+    # construction XML
     core = md_path.stem
     machines = EMU_TO_MACHINES.get(core, []) or [core]
     sys_name = ",".join(sorted(set(machines)))
-
     root = ET.Element('system', {'name':sys_name, 'emulator':core})
     inp  = ET.SubElement(root, 'input')
-
-    only_def = len(groups)==1 and groups[0]['name'].lower().startswith('default')
     ok = False
+    only_def = len(groups)==1 and groups[0]['name'].lower().startswith('default')
 
     for grp in groups:
         attrs = {'name': grp['name']}
         if only_def or grp['name'].lower().startswith('default'):
             attrs['type'] = 'default'
         gnode = ET.SubElement(inp, 'group', attrs)
-
-        for key, text, sysentr in grp['mappings']:
+        for key, text, sysent in grp['mappings']:
             ok = True
             dev_id = RETRO_IDS.get(key)
+            # directions
             if key in DIRECTIONS:
-                p = ET.SubElement(gnode, 'port', {'type': DIRECTIONS[key]})
+                p = ET.SubElement(gnode, 'port', {'type':DIRECTIONS[key]})
                 at = {'type':'standard'}
                 if dev_id is not None:    at['retropad_id'] = str(dev_id)
-                if sysentr:              at['system_entry'] = sysentr
+                if sysent:               at['system_entry'] = sysent
                 ET.SubElement(p, 'newseq', at).text = text
-
+            # boutons
             elif key in RETRO_BUTTONS:
                 bid, btn = RETRO_BUTTONS[key]
-                p = ET.SubElement(gnode, 'port', {'type': f'P1_{bid}'})
+                p = ET.SubElement(gnode, 'port', {'type':f'P1_{bid}'})
                 at = {'type':'standard'}
-                if btn:                    at['button']       = btn
-                if dev_id is not None:     at['retropad_id']  = str(dev_id)
-                if sysentr:                at['system_entry']= sysentr
+                if btn:                   at['button']       = btn
+                if dev_id is not None:    at['retropad_id']  = str(dev_id)
+                if sysent:                at['system_entry']= sysent
                 ET.SubElement(p, 'newseq', at).text = text
 
     xml = prettify(root)
@@ -354,19 +350,18 @@ def process_md(md_path, out_dir):
     return xml_name, ok
 
 def main():
-    base    = Path('libreto')
-    out_dir = Path('retroarch')
+    base    = Path('libreto')     # dossier source des .md
+    out_dir = Path('retroarch')   # dossier cible pour les .xml
     out_dir.mkdir(exist_ok=True)
 
     mds   = sorted(base.glob('*.md'))
     total = len(mds)
-
     for idx, md in enumerate(mds, 1):
         xml_name, ok = process_md(md, out_dir)
         status = 'OK' if ok else 'EMPTY'
         print(f"[{idx}/{total}] {md.name} → {xml_name} [{status}]")
 
-    print(f"\nProcessed {total}/{total} MD files, generated {total} XML files in {out_dir.resolve()}")
+    print(f"\nProcessed {total} MD files, generated {total} XML files in {out_dir.resolve()}")
 
 if __name__ == '__main__':
     main()

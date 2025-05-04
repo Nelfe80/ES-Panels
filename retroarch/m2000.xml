@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="m2000" emulator="m2000">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="P2000T Keys">
       <port type="P1_BUTTON1">
         <newseq type="standard" button="A" retropad_id="8" system_entry="Space / Fire">Space / Fire</newseq>
       </port>

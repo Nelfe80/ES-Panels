@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="3d_engine" emulator="3d_engine">
   <input>
-    <group name="User 1 Remap descriptors">
+    <group name="3D Engine core inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="Jump/Zoom-in">Jump/Zoom-in</newseq>
       </port>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="easyrpg" emulator="easyrpg">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="EasyRPG core inputs">
       <port type="P1_JOYSTICK_UP">
         <newseq type="standard" retropad_id="4" system_entry="Up">Up</newseq>
       </port>

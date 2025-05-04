@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="beetle_bsnes" emulator="beetle_bsnes">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="Beetle bsnes Inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="B">B</newseq>
       </port>

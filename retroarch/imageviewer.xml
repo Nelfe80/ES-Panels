@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="imageviewer" emulator="imageviewer">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="Imageviewer core inputs">
       <port type="P1_BUTTON4">
         <newseq type="standard" button="Y" retropad_id="1" system_entry="Automatic slideshow - Go to the next image every 2 seconds">Automatic slideshow - Go to the next image every 2 seconds</newseq>
       </port>

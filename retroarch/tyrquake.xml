@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="tyrquake" emulator="tyrquake">
   <input>
-    <group name="User 1 Remap descriptors for 'Gamepad Classic' device type">
+    <group name="TyrQuake inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="Jump">Jump</newseq>
       </port>
@@ -45,7 +45,7 @@
         <newseq type="standard" button="R2" retropad_id="13" system_entry="Look Down">Look Down</newseq>
       </port>
     </group>
-    <group name="User 1 Remap descriptors for 'Gamepad Classic Alt' device type">
+    <group name="TyrQuake inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="Look Down">Look Down</newseq>
       </port>
@@ -89,7 +89,7 @@
         <newseq type="standard" button="R2" retropad_id="13" system_entry="Next Weapon">Next Weapon</newseq>
       </port>
     </group>
-    <group name="User 1 Remap descriptors for 'Gamepad Modern' device type">
+    <group name="TyrQuake inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="Swim Down">Swim Down</newseq>
       </port>

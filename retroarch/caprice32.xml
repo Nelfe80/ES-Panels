@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="amstradcpc" emulator="caprice32">
   <input>
-    <group name="User 1 Remap descriptors">
+    <group name="Amstrad Joystick">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="FIRE1">B</newseq>
       </port>
@@ -45,7 +45,7 @@
         <newseq type="standard" button="SELECT" retropad_id="2" system_entry="COMBO (see bellow)">Select</newseq>
       </port>
     </group>
-    <group name="User 1 Remap descriptors">
+    <group name="Amstrad Joystick">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="B">B</newseq>
       </port>
@@ -89,7 +89,7 @@
         <newseq type="standard" button="SELECT" retropad_id="2" system_entry="COMBO (see bellow)">Select</newseq>
       </port>
     </group>
-    <group name="User 1 Remap descriptors">
+    <group name="Amstrad Joystick">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="SPACE">B</newseq>
       </port>
@@ -160,6 +160,35 @@
       </port>
       <port type="P1_BUTTON10">
         <newseq type="standard" button="SELECT" retropad_id="2" system_entry="Select + X">Select + X</newseq>
+      </port>
+    </group>
+    <group name="Amstrad Writes">
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="CAT">CAT</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="\">\</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="SHOW V-KEYBOARD">SHOW V-KEYBOARD</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="[1], [Y]">[1], [Y]</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="[2], [N]">[2], [N]</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="[4], [S]">[4], [S]</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="[3], [J]">[3], [J]</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="RUN&quot;DISK RUN&quot;DISC">RUN&quot;DISK RUN&quot;DISC</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2" system_entry="\">\</newseq>
       </port>
     </group>
   </input>

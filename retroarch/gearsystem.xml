@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="gamegear,mastersystem,sg1000" emulator="gearsystem">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="SMS / GG Pad">
       <port type="P1_JOYSTICK_UP">
         <newseq type="standard" retropad_id="4" system_entry="Up">Up</newseq>
       </port>

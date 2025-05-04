@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="snes9x_2002" emulator="snes9x_2002">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="Snes9x 2002 core Inputs">
       <port type="P1_BUTTON2">
         <newseq type="standard" button="B" retropad_id="0" system_entry="B">B</newseq>
       </port>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <system name="microw8" emulator="microw8">
   <input>
-    <group name="RetroPad Inputs">
+    <group name="MicroW8 inputs">
       <port type="P1_JOYSTICK_UP">
         <newseq type="standard" retropad_id="4" system_entry="D-Pad Up">D-Pad Up</newseq>
       </port>
