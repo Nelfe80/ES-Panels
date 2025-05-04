@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<system name="love,lutro" emulator="lutro">
+  <input>
+    <group name="User 1 Remap descriptors">
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">Right</newseq>
+      </port>
+    </group>
+  </input>
+</system>

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<system name="c128,c20,c64,cplus4,gmaster,pet,zinc" emulator="vice">
+  <input>
+    <group name="Input descriptors for Joystick">
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">B / Fire</newseq>
+      </port>
+    </group>
+  </input>
+</system>

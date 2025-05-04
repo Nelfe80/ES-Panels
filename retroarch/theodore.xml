@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<system name="theodore" emulator="theodore">
+  <input>
+    <group name="RetroPad Inputs">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">&quot;Fire&quot; button / Press key when the virtual keyboard is displayed</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Virtual keyboard: move up/down</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Virtual keyboard: show/hide</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Start program&lt;br&gt;(See: [Usage](#usage))</newseq>
+      </port>
+    </group>
+  </input>
+</system>

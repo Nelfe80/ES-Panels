@@ -1,0 +1,257 @@
+<?xml version="1.0" ?>
+<system name="dos" emulator="dosbox_pure">
+  <input>
+    <group name="Input descriptors for Gamepad 2 Button">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Button 2</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Button 1</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Gamepad 4 Button">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Button 3</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Button 1</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Button 4</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Button 2</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Joystick 2 Button">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Button 2</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Button 1</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Joystick 4 Button">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Button 3</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Button 1</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Button 4</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Button 2</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Keyboard - Port 1">
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">Kbd Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">Kbd Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">Kbd Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">Kbd Right</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Esc</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Enter</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Space</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Left Shift</newseq>
+      </port>
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Left Ctrl</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Left Alt</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">1</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">2</newseq>
+      </port>
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">3</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">4</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Keyboard - Port 2">
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">8</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">2</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">4</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">6</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Period</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Enter</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">5</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">1</newseq>
+      </port>
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">0</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">3</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">7</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">9</newseq>
+      </port>
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">Minus</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">Plus</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Keyboard - Port 3">
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">Q</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">A</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">Z</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">X</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">G</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">H</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">D</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">F</newseq>
+      </port>
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">C</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">S</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">W</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">E</newseq>
+      </port>
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">R</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">T</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Keyboard - Port 4">
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">Backspace</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">Backslash</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">Semicolon</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">Quote</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">O</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">P</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Slash</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Right Shift</newseq>
+      </port>
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Right Ctrl</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Right Alt</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">Left Bracket</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">Right Bracket</newseq>
+      </port>
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">Comma</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">Period</newseq>
+      </port>
+    </group>
+    <group name="Input descriptors for Emulated mouse">
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">Emulated Mouse Right Click</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">Emulated Mouse Left Click</newseq>
+      </port>
+    </group>
+  </input>
+</system>

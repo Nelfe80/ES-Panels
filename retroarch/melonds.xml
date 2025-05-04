@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<system name="nds" emulator="melonds">
+  <input>
+    <group name="User 1 input descriptors">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">B</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Y</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Select</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Start</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">Right</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">A</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">X</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">L</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">R</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">Swap Screens</newseq>
+      </port>
+    </group>
+  </input>
+</system>

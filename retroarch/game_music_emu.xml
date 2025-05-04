@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<system name="game_music_emu" emulator="game_music_emu">
+  <input>
+    <group name="default" type="default">
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">START</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">L1</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">R1</newseq>
+      </port>
+    </group>
+  </input>
+</system>

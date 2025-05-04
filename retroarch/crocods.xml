@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<system name="crocods" emulator="crocods">
+  <input>
+    <group name="User 1 Remap descriptors">
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Pause</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Start</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">Right</newseq>
+      </port>
+    </group>
+  </input>
+</system>

@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<system name="boom3" emulator="boom3">
+  <input>
+    <group name="User 1 input descriptors for 'Gamepad Classic' device type">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Use</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Run</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Show/Hide Map</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Show/Hide Menu</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Fire</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Strafe</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">Strafe Left</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">Strafe Right</newseq>
+      </port>
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">Previous Weapon</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">Next Weapon</newseq>
+      </port>
+    </group>
+    <group name="User 1 input descriptors for 'Gamepad Modern' device type">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Menu Cancel</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">Quick Save</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Show/Hide Map</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Show/Hide Menu</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Menu Select</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Quick Load</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">Previous Weapon</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">Next Weapon</newseq>
+      </port>
+      <port type="P1_BUTTON7">
+        <newseq type="standard" button="L2" retropad_id="12">Use</newseq>
+      </port>
+      <port type="P1_BUTTON8">
+        <newseq type="standard" button="R2" retropad_id="13">Fire</newseq>
+      </port>
+    </group>
+  </input>
+</system>

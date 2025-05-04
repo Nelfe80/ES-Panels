@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<system name="mastersystem,megadrive,sega32x,segacd" emulator="picodrive">
+  <input>
+    <group name="RetroPad Inputs">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">B</newseq>
+      </port>
+      <port type="P1_BUTTON4">
+        <newseq type="standard" button="Y" retropad_id="1">A</newseq>
+      </port>
+      <port type="P1_BUTTON10">
+        <newseq type="standard" button="SELECT" retropad_id="2">Mode</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Start</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">C</newseq>
+      </port>
+      <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">Y</newseq>
+      </port>
+      <port type="P1_BUTTON5">
+        <newseq type="standard" button="L1" retropad_id="10">X</newseq>
+      </port>
+      <port type="P1_BUTTON6">
+        <newseq type="standard" button="R1" retropad_id="11">Z</newseq>
+      </port>
+    </group>
+    <group name="RetroPad Inputs">
+      <port type="P1_BUTTON2">
+        <newseq type="standard" button="B" retropad_id="0">Button 1 Start</newseq>
+      </port>
+      <port type="P1_BUTTON9">
+        <newseq type="standard" button="START" retropad_id="3">Button Pause</newseq>
+      </port>
+      <port type="P1_JOYSTICK_UP">
+        <newseq type="standard" retropad_id="4">D-Pad Up</newseq>
+      </port>
+      <port type="P1_JOYSTICK_DOWN">
+        <newseq type="standard" retropad_id="5">D-Pad Down</newseq>
+      </port>
+      <port type="P1_JOYSTICK_LEFT">
+        <newseq type="standard" retropad_id="6">D-Pad Left</newseq>
+      </port>
+      <port type="P1_JOYSTICK_RIGHT">
+        <newseq type="standard" retropad_id="7">D-Pad Right</newseq>
+      </port>
+      <port type="P1_BUTTON1">
+        <newseq type="standard" button="A" retropad_id="8">Button 2</newseq>
+      </port>
+    </group>
+  </input>
+</system>
