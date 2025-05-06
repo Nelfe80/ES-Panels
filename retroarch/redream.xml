@@ -26,6 +26,9 @@
       <port type="P1_BUTTON1">
         <newseq type="standard" button="A" retropad_id="8">A</newseq>
       </port>
+	  <port type="P1_BUTTON3">
+        <newseq type="standard" button="X" retropad_id="9">X</newseq>
+      </port>
       <port type="P1_BUTTON7">
         <newseq type="standard" button="L2" retropad_id="12">L2</newseq>
       </port>
