@@ -1,0 +1,25 @@
+P-TESTER  PSP DiAGNOSTiC TOOL  CHANGELOG
+
+
+
+
+----------V2.0----------
+
+*Added UMD Drive test with cool UMD reading features
+*Fixed ALOT of bugs
+*Graphic system completely rewritten with OSLib MOD V2
+*Source code optimized !
+
+
+----------V1.5----------
+
+*Added Batterytest 
+*Various bugfix
+
+
+----------V1.0----------
+
+*1st Public Release :)
+*Keytest support
+*Screentest support
+*Soundtest support
