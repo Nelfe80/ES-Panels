@@ -13,6 +13,37 @@ COLOR_INIS = [
 CONTROLS_INI = 'ledblinky-arcade-controls.ini'
 OUTPUT_DIR = 'mame'
 
+# NeoGeo ROM set
+NEOGEO_ROMS = {
+    '2020bb', '3countb', 'afighters', 'afighters2', 'aggressors',
+    'alpham2', 'androdun', 'artoffight', 'bangbead', 'basebstars2',
+    'basebpro', 'battlefs', 'blazingst', 'bluesjour', 'breakers',
+    'breakrev', 'burningf', 'captomaday', 'crossswd', 'cyberlip',
+    'ddragon', 'eightman', 'feast2', 'fatalfury', 'fatalfury2',
+    'ffight2', 'ffightsp', 'fightfev', 'galaxyfg', 'ganryu',
+    'garou', 'ghostpil', 'goalgoal', 'gururin', 'ironclad',
+    'karnovr', 'kotm', 'kotm2', 'kizuna', 'lastres',
+    'lgbowl', 'joemacr', 'magdrop2', 'magdrop3', 'maglord',
+    'matrim', 'mslug', 'mslug2', 'mslug3', 'mslug4',
+    'mslug5', 'mslugx', 'mexport', 'mutnat', 'nam1975',
+    'neobombe', 'neodrift', 'neomrdo', 'neoturf', 'ngcup98',
+    'nightd', 'ninjak', 'ninjams', 'overtop', 'pbot',
+    'pgoal', 'poching', 'popbounc', 'spikes2', 'psio2',
+    'pulstar', 'puzloop', 'puzloop2', 'puzlopn', 'puzlopnr',
+    'puzzled', 'rotd', 'ragnagrd', 'rbffspec', 'rbff2',
+    'rbffsp', 'rhero', 'roboarmy', 'samsho', 'samsho2',
+    'samsho3', 'samsho4', 'samsho5', 'samsh5sp', 'savage',
+    'sengoku', 'sengoku2', 'sengoku3', 'stoktroo', 'stoktroo2',
+    'svcchaos', 'socbrawl', 'spinmast', 'stakevn', 'stakev2',
+    'streetho', 'strik194', 'dodgebal', 'sskick', 'sskick2',
+    'sskick3', 'tecmo96', 'kof2000', 'kof2001', 'kof2002',
+    'kof2003', 'kof94', 'kof95', 'kof96', 'kof97',
+    'kof98', 'kof99', 'lastblad', 'lastbld2', 'superspy',
+    'ult11', 'thrash', 'tophuntr', 'tophuntr2', 'twinklest',
+    'viewpoin', 'vf', 'waku7', 'windjamm', 'wh1',
+    'wh2', 'wh2j', 'whp', 'zedblade', 'zupapa'
+}
+
 # Static positions (grid: top row then bottom row)
 STATIC_POSITIONS = {
     '4': (30, 40), '3': (50, 40), '5': (70, 40), '7': (90, 40),
@@ -22,9 +53,9 @@ STATIC_POSITIONS = {
 # Default panel definitions (bottom row then top row)
 DEFAULT_PANEL_IDS = {
     '2-Button': ['1', '2'],
-    '4-Button': ['1', '2', '4', '3'],
-    '6-Button': ['1', '2', '6', '4', '3', '5'],
-    '8-Button': ['1', '2', '6', '8', '4', '3', '5', '7'],
+    '4-Button': ['1', '2', '3', '4'],
+    '6-Button': ['1', '2', '6', '3', '4', '5'],
+    '8-Button': ['1', '2', '6', '8', '3', '4', '5', '7'],
 }
 
 # Display layouts (top row then bottom row)
@@ -36,7 +67,6 @@ PANEL_IDS = {
 }
 
 # NeoGeo special mappings
-NEO_PANEL_IDS = PANEL_IDS.copy()
 NEO_GAMEBTN_MAP = {
     '2-Button': {'1': 'A', '2': 'B'},
     '4-Button': {'4': 'A', '3': 'B', '1': 'C', '2': 'D'},
@@ -63,9 +93,11 @@ def load_configurations():
     color_cfg = configparser.ConfigParser()
     color_cfg.optionxform = str
     color_cfg.read(COLOR_INIS)
+
     func_cfg = configparser.ConfigParser(strict=False)
     func_cfg.optionxform = str
     func_cfg.read(CONTROLS_INI)
+
     return color_cfg, func_cfg
 
 # Safe get
@@ -84,18 +116,17 @@ def prettify_xml(elem):
 # Generate XML for one ROM
 def generate_xml_for_rom(rom, color_cfg, func_cfg):
     rom_key = rom.lower()
-    # Determine NeoGeo
-    is_neo = func_cfg.has_section('neogeo') and rom_key in [s.lower() for s in func_cfg.options('neogeo')]
-    panel_map = NEO_PANEL_IDS if is_neo else PANEL_IDS
+    is_neo = rom_key in NEOGEO_ROMS
+    panel_map = PANEL_IDS if not is_neo else PANEL_IDS
 
     # Determine color section
     section = 'neogeo' if is_neo else rom_key
     cfg_section = next((s for s in color_cfg.sections() if s.lower() == section), None)
 
-    # Determine default panel and build func->color and phys->(func,color)
+    # Determine default panel and build phys->(func,color) mapping
     default_panel = '2-Button'
     func_map_phys = {}
-    if cfg_section:
+    if cfg_section and not is_neo:
         btn_opts = [k for k in color_cfg.options(cfg_section) if k.startswith('P1_BUTTON')]
         max_btn = max((int(k.replace('P1_BUTTON','')) for k in btn_opts), default=0)
         default_panel = (
@@ -105,7 +136,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
         )
         defaults = DEFAULT_PANEL_IDS[default_panel]
         for idx, phys in enumerate(defaults, start=1):
-            func = get_value(func_cfg, section, f'P1_BUTTON{idx}', 'None')
+            func = get_value(func_cfg, rom_key, f'P1_BUTTON{idx}', 'None')
             if func != 'None':
                 col = get_value(color_cfg, cfg_section, f'P1_BUTTON{idx}', 'Gray')
                 func_map_phys[phys] = (func, col)
@@ -115,7 +146,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
     game_el = ET.SubElement(system, 'game', name=rom, rom=rom)
     layouts_el = ET.SubElement(game_el, 'layouts')
 
-    # Joystick
+    # Joystick color
     joy_col = get_value(color_cfg, cfg_section, 'P1_JOYSTICK', JOYSTICK_DEFAULT_COLOR) if cfg_section else JOYSTICK_DEFAULT_COLOR
     joystick_color = 'Black' if is_neo else joy_col
 
@@ -123,7 +154,7 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
         lay = ET.SubElement(layouts_el, 'layout', panelButtons=str(len(ids)), type=layout_type)
         ET.SubElement(lay, 'joystick', color=joystick_color)
 
-        # 2-Button special: pick first two active from defaults
+        # 2-Button special handling
         active_two = []
         if not is_neo and layout_type == '2-Button':
             for phys in DEFAULT_PANEL_IDS[default_panel]:
@@ -148,23 +179,23 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
                 else:
                     func, color = func_map_phys.get(phys, ('None','Black'))
                 controller = RB_CONTROLLER_MAP[phys]
-                game_btn = ('L1' if controller=='PAGEUP' else 'R1' if controller=='PAGEDOWN' else controller)
+                game_btn = (
+                    'L1' if controller=='PAGEUP' else 'R1' if controller=='PAGEDOWN' else controller
+                )
 
-            ET.SubElement(
-                lay, 'button',
-                id=phys, physical=phys,
-                controller=controller, gameButton=game_btn,
-                x=str(x), y=str(y), color=color, function=func
-            )
+            ET.SubElement(lay, 'button',
+                          id=phys, physical=phys,
+                          controller=controller, gameButton=game_btn,
+                          x=str(x), y=str(y), color=color, function=func)
 
         # START & COIN
         sp = str(len(ids) + 1)
         cp = str(len(ids) + 2)
-        ET.SubElement(lay, 'button', id=sp, physical=sp,
+        ET.SubElement(lay, 'button', id='START', physical=sp,
                       controller='START', gameButton='START',
                       x=str(START_POS[0]), y=str(START_POS[1]),
                       color=get_value(color_cfg, cfg_section, 'P1_START', 'White'), function='Start')
-        ET.SubElement(lay, 'button', id=cp, physical=cp,
+        ET.SubElement(lay, 'button', id='COIN', physical=cp,
                       controller='SELECT', gameButton='COIN',
                       x=str(COIN_POS[0]), y=str(COIN_POS[1]),
                       color=get_value(color_cfg, cfg_section, 'P1_COIN', 'White'), function='Coin')
@@ -172,16 +203,15 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
     return system
 
 # Main
-def main():
+if __name__ == '__main__':
     color_cfg, func_cfg = load_configurations()
-    roms = [s.lower() for s in func_cfg.sections() if s not in ('DEFAULT','neogeo')]
+    # Include both configured ROMs and NeoGeo set
+    func_roms = {s.lower() for s in func_cfg.sections() if s not in ('DEFAULT','neogeo')}
+    all_roms = sorted(func_roms.union(NEOGEO_ROMS))
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    for rom in roms:
+    for rom in all_roms:
         xml_root = generate_xml_for_rom(rom, color_cfg, func_cfg)
         xml_bytes = prettify_xml(xml_root)
         with open(os.path.join(OUTPUT_DIR, f'{rom}.xml'), 'wb') as f:
             f.write(xml_bytes)
     print('Génération terminée !')
-
-if __name__ == '__main__':
-    main()
