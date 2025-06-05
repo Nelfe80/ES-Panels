@@ -50,14 +50,6 @@ STATIC_POSITIONS = {
     '1': (30, 60), '2': (50, 60), '6': (70, 60), '8': (90, 60),
 }
 
-# Default panel definitions (bottom row then top row)
-DEFAULT_PANEL_IDS = {
-    '2-Button': ['1', '2'],
-    '4-Button': ['1', '2', '3', '4'],
-    '6-Button': ['1', '2', '6', '3', '4', '5'],
-    '8-Button': ['1', '2', '6', '8', '3', '4', '5', '7'],
-}
-
 # Display layouts (top row then bottom row)
 PANEL_IDS = {
     '2-Button': ['1', '2'],
@@ -71,7 +63,8 @@ NEO_GAMEBTN_MAP = {
     '2-Button': {'1': 'A', '2': 'B'},
     '4-Button': {'4': 'A', '3': 'B', '1': 'C', '2': 'D'},
     '6-Button': {'4': 'A', '3': 'B', '5': 'C', '1': 'D', '2': 'E', '6': 'F'},
-    '8-Button': {'4': 'A', '3': 'B', '5': 'C', '7': 'D', '1': 'E', '2': 'F', '6': 'G', '8': 'H'},
+    '8-Button': {'4': 'A', '3': 'B', '5': 'C', '7': 'D',
+                 '1': 'E', '2': 'F', '6': 'G', '8': 'H'},
 }
 NEO_BUTTON_COLORS = {
     'A': 'Red', 'B': 'Yellow', 'C': 'Green', 'D': 'Blue',
@@ -116,14 +109,14 @@ def prettify_xml(elem):
 # Generate XML for one ROM
 def generate_xml_for_rom(rom, color_cfg, func_cfg):
     rom_key = rom.lower()
-    is_neo = rom_key in NEOGEO_ROMS
-    panel_map = PANEL_IDS if not is_neo else PANEL_IDS
+    is_neo = (rom_key in NEOGEO_ROMS)
+    panel_map = PANEL_IDS
 
     # Determine color section
     section = 'neogeo' if is_neo else rom_key
     cfg_section = next((s for s in color_cfg.sections() if s.lower() == section), None)
 
-    # Determine default panel and build phys->(func,color) mapping
+    # Determine default panel and build func_map_phys = {phys: (fonction, couleur)}
     default_panel = '2-Button'
     func_map_phys = {}
     if cfg_section and not is_neo:
@@ -132,21 +125,29 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
         default_panel = (
             '2-Button' if max_btn <= 2 else
             '4-Button' if max_btn <= 4 else
-            '6-Button' if max_btn <= 6 else '8-Button'
+            '6-Button' if max_btn <= 6 else
+            '8-Button'
         )
-        defaults = DEFAULT_PANEL_IDS[default_panel]
-        for idx, phys in enumerate(defaults, start=1):
+        # → Si ≤ 4 boutons, on impose l’ordre phys=A,B,Y,X → ['1','2','4','3']
+        if max_btn <= 4:
+            phys_order = ['1','2','4','3'][:max_btn]
+        elif max_btn <= 6 and max_btn > 4:
+            phys_order = ['3','4','5','1','2','6'][:max_btn]
+        else:
+            # Pour 6 ou 8 boutons, on prend top→bottom
+            phys_order = PANEL_IDS[default_panel][:max_btn]
+        for idx, phys in enumerate(phys_order, start=1):
             func = get_value(func_cfg, rom_key, f'P1_BUTTON{idx}', 'None')
             if func != 'None':
                 col = get_value(color_cfg, cfg_section, f'P1_BUTTON{idx}', 'Gray')
                 func_map_phys[phys] = (func, col)
 
-    # Build XML
+    # Build XML tree
     system = ET.Element('system', name='arcade')
     game_el = ET.SubElement(system, 'game', name=rom, rom=rom)
     layouts_el = ET.SubElement(game_el, 'layouts')
 
-    # Joystick color
+    # Joystick color (noir si NeoGeo, sinon depuis l'INI)
     joy_col = get_value(color_cfg, cfg_section, 'P1_JOYSTICK', JOYSTICK_DEFAULT_COLOR) if cfg_section else JOYSTICK_DEFAULT_COLOR
     joystick_color = 'Black' if is_neo else joy_col
 
@@ -154,58 +155,98 @@ def generate_xml_for_rom(rom, color_cfg, func_cfg):
         lay = ET.SubElement(layouts_el, 'layout', panelButtons=str(len(ids)), type=layout_type)
         ET.SubElement(lay, 'joystick', color=joystick_color)
 
-        # 2-Button special handling
-        active_two = []
+        # --- Cas 2-Button : on prend les 2 premières touches actives
         if not is_neo and layout_type == '2-Button':
-            for phys in DEFAULT_PANEL_IDS[default_panel]:
+            active_two = []
+            # On parcourt l’ordre top→bottom de default_panel
+            for phys in PANEL_IDS[default_panel]:
                 if phys in func_map_phys:
                     active_two.append((phys,) + func_map_phys[phys])
                 if len(active_two) == 2:
                     break
 
-        for phys in ids:
-            x, y = STATIC_POSITIONS[phys]
-            if is_neo:
-                mapping = NEO_GAMEBTN_MAP.get(layout_type, {})
-                letter = mapping.get(phys)
-                func = get_value(func_cfg, 'neogeo', f'P1_BUTTON{list(mapping.values()).index(letter)+1}', 'None') if letter else 'None'
-                color = NEO_BUTTON_COLORS.get(letter, 'Black')
+            # Créer exactement deux boutons dans PHYS '1' et '2' (bottom-left, bottom-center)
+            for idx, (phys, func, color) in enumerate(active_two, start=1):
+                x, y = STATIC_POSITIONS[str(idx)]  # '1'→(30,60), '2'→(50,60)
                 controller = RB_CONTROLLER_MAP[phys]
-                game_btn = letter or 'NONE'
-            else:
-                if layout_type == '2-Button' and active_two:
-                    matched = {a[0]: (a[1], a[2]) for a in active_two}
-                    func, color = matched.get(phys, ('None','Black'))
-                else:
-                    func, color = func_map_phys.get(phys, ('None','Black'))
-                controller = RB_CONTROLLER_MAP[phys]
-                game_btn = (
-                    'L1' if controller=='PAGEUP' else 'R1' if controller=='PAGEDOWN' else controller
+                game_btn = ('L1' if controller == 'PAGEUP'
+                            else 'R1' if controller == 'PAGEDOWN'
+                            else controller)
+                ET.SubElement(
+                    lay, 'button',
+                    id=str(idx), physical=phys,
+                    controller=controller, gameButton=game_btn,
+                    x=str(x), y=str(y), color=color, function=func
+                )
+            # Si on a moins de 2 touches actives, ajouter un bouton « None » dans la ou les cases restantes
+            for idx in range(len(active_two) + 1, 3):
+                x, y = STATIC_POSITIONS[str(idx)]
+                controller = RB_CONTROLLER_MAP[str(idx)]
+                game_btn = ('L1' if controller == 'PAGEUP'
+                            else 'R1' if controller == 'PAGEDOWN'
+                            else controller)
+                ET.SubElement(
+                    lay, 'button',
+                    id=str(idx), physical=str(idx),
+                    controller=controller, gameButton=game_btn,
+                    x=str(x), y=str(y), color='Black', function='None'
                 )
 
-            ET.SubElement(lay, 'button',
-                          id=phys, physical=phys,
-                          controller=controller, gameButton=game_btn,
-                          x=str(x), y=str(y), color=color, function=func)
+        else:
+            # --- Pour 4, 6, 8 boutons (ou NeoGeo) : on parcourt simplement ids
+            for phys in ids:
+                x, y = STATIC_POSITIONS[phys]
+                if is_neo:
+                    mapping = NEO_GAMEBTN_MAP.get(layout_type, {})
+                    letter = mapping.get(phys)
+                    if letter:
+                        func = get_value(func_cfg, 'neogeo',
+                                        f'P1_BUTTON{list(mapping.values()).index(letter)+1}', 'None')
+                        color = NEO_BUTTON_COLORS.get(letter, 'Black')
+                    else:
+                        func = 'None'
+                        color = 'Black'
+                    controller = RB_CONTROLLER_MAP[phys]
+                    game_btn = letter or 'NONE'
+                else:
+                    func, color = func_map_phys.get(phys, ('None', 'Black'))
+                    controller = RB_CONTROLLER_MAP[phys]
+                    game_btn = ('L1' if controller == 'PAGEUP'
+                                else 'R1' if controller == 'PAGEDOWN'
+                                else controller)
 
-        # START & COIN
+                ET.SubElement(
+                    lay, 'button',
+                    id=phys, physical=phys,
+                    controller=controller, gameButton=game_btn,
+                    x=str(x), y=str(y), color=color, function=func
+                )
+
+        # Ajouter toujours START & COIN
         sp = str(len(ids) + 1)
         cp = str(len(ids) + 2)
-        ET.SubElement(lay, 'button', id='START', physical=sp,
-                      controller='START', gameButton='START',
-                      x=str(START_POS[0]), y=str(START_POS[1]),
-                      color=get_value(color_cfg, cfg_section, 'P1_START', 'White'), function='Start')
-        ET.SubElement(lay, 'button', id='COIN', physical=cp,
-                      controller='SELECT', gameButton='COIN',
-                      x=str(COIN_POS[0]), y=str(COIN_POS[1]),
-                      color=get_value(color_cfg, cfg_section, 'P1_COIN', 'White'), function='Coin')
+        ET.SubElement(
+            lay, 'button',
+            id='START', physical=sp,
+            controller='START', gameButton='START',
+            x=str(START_POS[0]), y=str(START_POS[1]),
+            color=get_value(color_cfg, cfg_section, 'P1_START', 'White'),
+            function='Start'
+        )
+        ET.SubElement(
+            lay, 'button',
+            id='COIN', physical=cp,
+            controller='SELECT', gameButton='COIN',
+            x=str(COIN_POS[0]), y=str(COIN_POS[1]),
+            color=get_value(color_cfg, cfg_section, 'P1_COIN', 'White'),
+            function='Coin'
+        )
 
     return system
 
 # Main
 if __name__ == '__main__':
     color_cfg, func_cfg = load_configurations()
-    # Include both configured ROMs and NeoGeo set
     func_roms = {s.lower() for s in func_cfg.sections() if s not in ('DEFAULT','neogeo')}
     all_roms = sorted(func_roms.union(NEOGEO_ROMS))
     os.makedirs(OUTPUT_DIR, exist_ok=True)
