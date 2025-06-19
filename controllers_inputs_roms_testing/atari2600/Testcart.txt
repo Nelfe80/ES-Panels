@@ -1,0 +1,38 @@
+Atari 2600 Testcart plus
+by Paul Slocum
+-------------------------------
+The Testcart plus is an Atari 2600 cartridge designed to test an Atari 2600 console and controllers. The cartridge allows you to test color, sound, the console switches, and several controllers.
+
+Color Test Screen
+-------------------------------
+When you insert the cartridge and turn on the console, a color test pattern will be displayed and a song will begin playing. This will allow you to verify that the sound and color are working. Note that color saturation and hue will vary from Atari to Atari, so if the colors are a little off, it is normal. No color at all, or mixed up colors may indicate a problem. After a short delay, the Controller Test Screen will be displayed. To jump immediately to the Controller Test Screen, press and release Game Select. To lock the Color Test Screen on, press and release Game Select and Game Reset simultaneously.
+
+Controller Test Screen
+-------------------------------
+This screen allows you to test the console switches and several controllers. It simultaneously displays the position of all switches and controllers, so all you have to do is flip a switch or insert a controller to test it. Console Switches:
+
+DFL - position of the Left Difficulty switch (A/B)
+DFR - position of the Right Difficulty switch (A/B)
+SEL - position of the Game Select switch (0/1)
+RES - position of the Game Reset switch (0/1)
+BW - position of the Color/B&W switch (BW/COL)
+
+Joysticks:
+The diagram at the top indicates the status of the left and right joysticks. When a joystick is inserted and moved, an arrow will appear showing the direction moved. The circle will become solid when the button is pressed. A trackball can also be tested.
+
+Keyboards:
+The KEYBOARDL and KEYBOARDR indicate the button pressed on the left and right keyboard controllers. Video Touch Pads and Kids Controllers can also be tested this way. The keyboard indicators may show odd values when testing other controllers. This is normal.
+
+Paddles:
+The two left and two right paddles control the four colored bars at the bottom of the screen. The left and right arrows on the joystick indicators will appear when the paddle buttons are pressed.
+
+
+
+
+(c) 2002 Paul Slocum
+http://www.mindspring.com/~paul-slocum
+
+Distribution:
+The ROM image for the Testcart may be distributed freely provided that this text file is included with the ROM.
+
+Permission is NOT granted for any individual to manufacture or distribute cartridge versions of the ROM code for another end user under any circumstances.
